@@ -1,0 +1,134 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #635bff;
+    --primary-dark: #5148d8;
+    --ink: #25243a;
+    --muted: #77758f;
+    --border: #e6e5f0;
+    --surface: #ffffff;
+}
+
+body {
+    align-items: center;
+    background: linear-gradient(135deg, #f3f1ff 0%, #eef7ff 100%);
+    display: flex;
+    font-family: Arial, sans-serif;
+    justify-content: center;
+    margin: 0;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.auth-card {
+    background: var(--surface);
+    border: 1px solid rgba(255, 255, 255, .8);
+    border-radius: 22px;
+    box-shadow: 0 22px 55px rgba(70, 65, 130, .16);
+    padding: 40px;
+    width: min(100% - 32px, 460px);
+}
+
+h1 {
+    color: var(--ink);
+    font-size: 30px;
+    letter-spacing: -.5px;
+    margin: 0 0 10px;
+}
+
+.subtitle {
+    color: var(--muted);
+    line-height: 1.5;
+    margin: 0 0 24px;
+}
+
+label {
+    color: var(--ink);
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 16px 0 8px;
+}
+
+input,
+select {
+    background: #fcfcff;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    font-size: 16px;
+    padding: 13px 15px;
+    transition: border-color .2s, box-shadow .2s;
+    width: 100%;
+}
+
+input:focus,
+select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(99, 91, 255, .12);
+    outline: none;
+}
+
+button {
+    border: 0;
+    border-radius: 11px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    min-height: 48px;
+    padding: 13px 16px;
+    transition: background .2s, box-shadow .2s, transform .2s;
+    width: 100%;
+}
+
+.primary-button {
+    background: var(--primary);
+    color: #fff;
+    margin-top: 26px;
+}
+
+.primary-button:hover:not(:disabled) {
+    background: var(--primary-dark);
+    box-shadow: 0 8px 18px rgba(99, 91, 255, .25);
+    transform: translateY(-1px);
+}
+
+.secondary-button {
+    background: #f5f4ff;
+    color: var(--primary-dark);
+    margin-top: 10px;
+}
+
+.secondary-button:hover {
+    background: #ebe9ff;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: .7;
+}
+
+.message {
+    border-radius: 11px;
+    font-size: 14px;
+    line-height: 1.4;
+    margin-top: 18px;
+    padding: 12px;
+}
+
+.error {
+    background: #fff0f1;
+    color: #b4233c;
+}
+
+.success {
+    background: #edfbf4;
+    color: #18794e;
+}
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 28px 22px;
+    }
+}
