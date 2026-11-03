@@ -1,5 +1,9 @@
 const { createApp, ref } = Vue;
 
+const authDirection = sessionStorage.getItem('authDirection') || 'forward';
+document.documentElement.dataset.authDirection = authDirection;
+sessionStorage.removeItem('authDirection');
+
 createApp({
     setup() {
         const name = ref('');
@@ -55,6 +59,7 @@ createApp({
         }
 
         function irAlLogin() {
+            sessionStorage.setItem('authDirection', 'back');
             window.location.href = '/login';
         }
 

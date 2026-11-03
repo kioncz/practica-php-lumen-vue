@@ -15,6 +15,12 @@ Homestead.yaml
 /node_modules
 /public/build
 
+# Local AI design skills and installation metadata
+/.agents
+/.claude
+/skills-lock.json
+DESIGN.md
+
 # Operating system files
 .DS_Store
 Thumbs.db
