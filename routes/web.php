@@ -15,11 +15,11 @@
 
 // Vistas públicas.
 $router->get('/login', function () {
-    return view('login');
+    return view('login', ['initialMode' => 'login']);
 });
 
 $router->get('/register', function () {
-    return view('register');
+    return view('login', ['initialMode' => 'register']);
 });
 
 // Endpoints públicos de autenticación.
@@ -36,6 +36,10 @@ $router->get('/client/tickets', function () {
     return view('client-tickets');
 });
 
+$router->get('/admin/tickets', function () {
+    return view('gestionticket');
+});
+
 // Endpoints protegidos para tickets.
 $router->group(['middleware' => 'jwt'], function () use ($router) {
     $router->get('/tickets', 'TicketController@index');
@@ -43,6 +47,7 @@ $router->group(['middleware' => 'jwt'], function () use ($router) {
     $router->get('/tickets/{id}', 'TicketController@show');
     $router->put('/tickets/{id}', 'TicketController@update');
     $router->delete('/tickets/{id}', 'TicketController@destroy');
+    $router->get('/admin/tickets/data', 'GestionController@index');
 });
 
 $router->get('/{any:.*}', function () {

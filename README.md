@@ -1,87 +1,87 @@
-# Practica PHP 2 - Sistema de tickets
+# Pulso
 
-Aplicacion realizada con Lumen, PHP, MySQL y Vue 3 para practicar autenticacion de usuarios y administracion de tickets.
+## Gestión de tickets de soporte
 
-## Funcionalidades
+Pulso es una aplicación para registrar, organizar y dar seguimiento a
+solicitudes de soporte. Su objetivo es que cada problema tenga un lugar claro,
+un responsable y un estado visible hasta su resolución.
 
-- Registro de usuarios con nombre, correo, contrasena y rol.
-- Inicio de sesion con JWT.
-- Roles `client` y `admin`.
-- Proteccion de rutas mediante middleware JWT.
-- Vista de login y registro con Vue 3.
-- Vista de tickets para clientes.
-- Creacion de tickets desde la vista del cliente.
-- Seleccion de prioridad: baja, media o alta.
-- Estado inicial automatico: abierta.
-- Los clientes solo consultan sus propios tickets.
-- Los administradores pueden consultar todos los tickets.
+En lugar de perder solicitudes entre mensajes o conversaciones, los usuarios
+pueden crear tickets y consultar en todo momento qué está ocurriendo con ellos.
 
-## Tecnologias
+## ¿Qué es un ticket?
 
-- PHP 8.1 o superior.
-- Lumen 10.
-- MySQL.
-- Vue 3 mediante CDN.
-- Firebase PHP-JWT.
-- HTML y CSS.
+Un ticket es una solicitud de ayuda o un problema que necesita atención. Cada
+ticket contiene:
 
-## Instalacion
+- Un título que resume la solicitud.
+- Una descripción con todos los detalles.
+- Una prioridad: baja, media o alta.
+- Un estado de seguimiento.
+- La fecha en que fue creado.
+- El usuario que lo registró.
 
-1. Instalar las dependencias de PHP:
+## Usuarios de la aplicación
 
-   ```powershell
-   composer install
-   ```
+### Cliente
 
-2. Crear el archivo `.env` a partir de `.env.example`.
+El cliente puede:
 
-3. Configurar en `.env` la base de datos y el secreto JWT:
+- Crear una nueva solicitud.
+- Consultar sus propios tickets.
+- Filtrar tickets abiertos o cerrados.
+- Ver toda la información de cada solicitud.
+- Editar el título, la descripción y la prioridad.
+- Eliminar una solicitud cuando sea necesario.
 
-   ```env
-   DB_DATABASE=ticket_db
-   DB_USERNAME=root
-   DB_PASSWORD=
-   JWT_SECRET=un-secreto-largo-y-seguro
-   JWT_TTL=3600
-   ```
+### Administrador
 
-4. Crear las tablas:
+El administrador cuenta con una vista general para organizar el soporte. Puede:
 
-   ```powershell
-   php artisan migrate
-   ```
+- Consultar los tickets de todos los usuarios.
+- Ver quién creó cada solicitud.
+- Buscar tickets por número, título o usuario.
+- Filtrar solicitudes abiertas y cerradas.
+- Consultar el detalle completo de cualquier ticket.
+- Cambiar el estado de una solicitud desde la tarjeta o su ventana de detalle.
 
-5. Iniciar el servidor:
+## Estados de un ticket
 
-   ```powershell
-   php artisan serve
-   ```
+Cada solicitud puede encontrarse en uno de estos estados:
 
-## Rutas principales
+- **Abierta:** la solicitud fue registrada y todavía necesita atención.
+- **En progreso:** el equipo ya está trabajando en ella.
+- **Cerrada:** la solicitud fue atendida y se considera resuelta.
 
-| Metodo | Ruta | Descripcion |
-|---|---|---|
-| GET | `/` | Redirige al login |
-| GET | `/login` | Muestra la vista de inicio de sesion |
-| POST | `/login` | Autentica al usuario |
-| GET | `/register` | Muestra la vista de registro |
-| POST | `/register` | Registra un usuario |
-| GET | `/client/tickets` | Muestra los tickets del cliente |
-| GET | `/tickets` | Lista tickets, requiere JWT |
-| POST | `/tickets` | Crea un ticket, requiere JWT |
+## Recorrido principal
 
-Las rutas protegidas requieren el encabezado:
+1. El usuario crea una cuenta o inicia sesión.
+2. El cliente registra una solicitud con su título, descripción y prioridad.
+3. La solicitud aparece en su panel personal.
+4. El administrador revisa la solicitud y puede cambiar su estado.
+5. El cliente consulta el avance desde su propio panel.
+6. Cuando el problema queda resuelto, el ticket pasa a estado cerrado.
 
-```http
-Authorization: Bearer TU_TOKEN
-```
+## Paneles
 
-## Flujo de uso
+### Panel del cliente
 
-1. Entrar a `http://localhost:8000/login`.
-2. Crear una cuenta desde `/register`.
-3. Iniciar sesion.
-4. Si el usuario es cliente, se redirige a `/client/tickets`.
-5. Desde esa vista puede consultar sus tickets y crear nuevos.
+El panel del cliente muestra un resumen de sus solicitudes, filtros de consulta
+y tarjetas con la información principal de cada ticket. Desde cada tarjeta puede
+abrir una ventana con el detalle completo.
 
-El proyecto usa Vue dentro de las vistas PHP. Vue controla los formularios y realiza las peticiones AJAX con `fetch`, mientras Lumen valida los datos, aplica el middleware JWT y se comunica con MySQL.
+### Panel de administración
+
+El panel administrativo funciona como una mesa de seguimiento. Incluye un
+resumen general, búsqueda, filtros, identificación del usuario creador y
+controles para actualizar el estado de cada ticket.
+
+## Diseño de Pulso
+
+La aplicación utiliza una interfaz clara y directa para que la información
+importante pueda encontrarse rápidamente. Los colores ayudan a distinguir
+prioridades y estados, mientras que las ventanas de detalle permiten consultar
+la información completa sin abandonar el panel.
+
+La experiencia también se adapta a pantallas pequeñas y respeta la preferencia
+del usuario por reducir las animaciones.

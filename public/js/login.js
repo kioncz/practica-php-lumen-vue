@@ -1,5 +1,9 @@
 const { createApp, ref } = Vue;
 
+const authDirection = sessionStorage.getItem('authDirection') || 'forward';
+document.documentElement.dataset.authDirection = authDirection;
+sessionStorage.removeItem('authDirection');
+
 createApp({
     setup() {
         const email = ref('');
@@ -32,6 +36,11 @@ createApp({
                     );
                 }
 
+                function irAlRegistro() {
+                    sessionStorage.setItem('authDirection', 'forward');
+                    window.location.href = '/register';
+                }
+
                 localStorage.removeItem('userName');
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('user', JSON.stringify(data.user));
@@ -41,7 +50,7 @@ createApp({
                 setTimeout(() => {
                     window.location.href = data.user.role === 'client'
                         ? '/client/tickets'
-                        : '/tickets';
+                        : '/admin/tickets';
                 }, 700);
             } catch (error) {
                 tipoMensaje.value = 'error';
@@ -57,7 +66,8 @@ createApp({
             mensaje,
             tipoMensaje,
             cargando,
-            iniciarSesion
+            iniciarSesion,
+            irAlRegistro
         };
     }
 }).mount('#app');

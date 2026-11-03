@@ -100,7 +100,42 @@ class TicketController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $rules = [
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'priority' => 'required|in:baja,media,alta',
+        ];
+
+        if ($request->auth->role === 'admin') {
+            $rules = [
+                'status' => 'required|in:abierta,en_progreso,cerrada',
+            ];
+        }
+
+        $this->validate($request, $rules);
+
+        $query = Tickets::where('id', $id);
+
+        if ($request->auth->role === 'client') {
+            $query->where('user_id', $request->auth->id);
+        }
+
+        $ticket = $query->first();
+
+        if (!$ticket) {
+            return response()->json(['error' => 'Ticket no encontrado.'], 404);
+        }
+
+        $fields = $request->auth->role === 'admin'
+            ? ['status']
+            : ['title', 'description', 'priority'];
+
+        $ticket->update($request->only($fields));
+
+        return response()->json([
+            'message' => 'Ticket actualizado correctamente',
+            'ticket' => $ticket->fresh(),
+        ]);
     }
 
     /**
@@ -109,8 +144,22 @@ class TicketController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $query = Tickets::where('id', $id);
+
+        if ($request->auth->role === 'client') {
+            $query->where('user_id', $request->auth->id);
+        }
+
+        $ticket = $query->first();
+
+        if (!$ticket) {
+            return response()->json(['error' => 'Ticket no encontrado.'], 404);
+        }
+
+        $ticket->delete();
+
+        return response()->json(['message' => 'Ticket eliminado correctamente']);
     }
 }
